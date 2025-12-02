@@ -317,6 +317,9 @@ node_modules/
 *.dsw
 *.dsp
 
+# ZAP reports
+zap/reports/
+
 # Visual Studio 6 technical files
 *.ncb
 *.aps
