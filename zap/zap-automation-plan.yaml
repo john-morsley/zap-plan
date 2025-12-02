@@ -8,11 +8,12 @@ env:
         - "https://localhost:5001"
       includePaths:
         - "https://localhost:5001/.*"
-      excludePaths: []
+      excludePaths:
+        - "https://localhost:5001/authorisation"
       authentication:
         method: "script"
         parameters:
-          script: "simple-api-auth.js"
+          script: "./api-auth.js"
           scriptEngine: "Graal.js"
           auth_endpoint: "https://localhost:5001/authorisation"
           client_id: "ABC"
@@ -24,7 +25,7 @@ env:
       sessionManagement:
         method: "script"
         parameters:
-          script: "simple-api-session.js"
+          script: "./api-session.js"
           scriptEngine: "Graal.js"
       users:
         - name: "test-client"
@@ -45,8 +46,8 @@ jobs:
       action: "add"
       type: "httpsender"
       engine: "Graal.js"
-      name: "simple-api-httpsender.js"
-      file: "simple-api-httpsender.js"
+      name: "api-httpsender.js"
+      file: "./api-httpsender.js"
 
   - type: "openapi"
     parameters:
