@@ -1,0 +1,119 @@
+# https://www.zaproxy.org/docs/automate/automation-framework/
+
+# https://www.zaproxy.org/docs/desktop/addons/automation-framework/environment/
+env:
+  contexts:
+    - name: "simple-auth-api"
+      urls:
+        - "https://localhost:5001"
+      includePaths:
+        - "https://localhost:5001/.*"
+      excludePaths: []
+      authentication:
+        method: "script"
+        parameters:
+          script: "simple-api-auth.js"
+          scriptEngine: "Graal.js"
+          auth_endpoint: "https://localhost:5001/authorisation"
+          client_id: "ABC"
+          client_secret: "123"
+        verification:
+          method: "response"
+          loggedInRegex: "\\QeyJ\\E"
+          loggedOutRegex: "\\Q401\\E|\\QUnauthorized\\E"
+      sessionManagement:
+        method: "script"
+        parameters:
+          script: "simple-api-session.js"
+          scriptEngine: "Graal.js"
+      users:
+        - name: "test-client"
+          credentials: {}
+  parameters:
+    failOnError: false
+    failOnWarning: false
+    progressToStdout: true
+  vars:
+    target: "https://localhost:5001"
+    auth_endpoint: "https://localhost:5001/authorisation"
+    client_id: "ABC"
+    client_secret: "123"
+
+jobs:
+  - type: "script"
+    parameters:
+      action: "add"
+      type: "httpsender"
+      engine: "Graal.js"
+      name: "simple-api-httpsender.js"
+      file: "simple-api-httpsender.js"
+
+  - type: "openapi"
+    parameters:
+      apiFile: "./swagger.json"
+      #apiUrl: "https://localhost:5001/swagger/v1/swagger.json"
+      context: "simple-auth-api"
+      targetUrl: "https://localhost:5001"
+
+  - type: "spider"
+    parameters:
+      context: "simple-auth-api"
+      user: "test-client"
+      url: "https://localhost:5001/Health"
+      maxDuration: 2
+      maxDepth: 5
+      maxChildren: 10
+    
+  - type: "passiveScan-wait"
+    parameters:
+      maxDuration: 2
+
+  # https://www.zaproxy.org/docs/desktop/addons/automation-framework/job-ascan/
+  - type: "activeScan"
+    parameters:
+      context: "simple-auth-api"
+      user: "test-client"
+      maxRuleDurationInMins: 5
+      maxScanDurationInMins: 15
+    policyDefinition:
+      defaultStrength: "HIGH" # Low, Medium, High, Insane (not recommended), default: Medium
+      defaultThreshold: "MEDIUM" # Off, Low, Medium, High, default: Medium
+      rules:
+        - id: 40012
+          name: "Cross Site Scripting (Reflected)"
+          threshold: "LOW"
+          strength: "HIGH"
+        - id: 40014
+          name: "Cross Site Scripting (Persistent)"
+          threshold: "LOW"
+          strength: "HIGH"
+        - id: 40018
+          name: "SQL Injection"
+          threshold: "LOW"
+          strength: "HIGH"
+        - id: 90019
+          name: "Server Side Code Injection"
+          threshold: "LOW"
+          strength: "HIGH"
+        - id: 6
+          name: "Path Traversal"
+          threshold: "LOW"
+          strength: "HIGH"
+    
+  - type: "passiveScan-wait"
+    parameters:
+      maxDuration: 2
+    
+  # https://www.zaproxy.org/docs/desktop/addons/report-generation/automation/    
+  - type: "report"
+    parameters:
+      template: "traditional-md"
+      reportDir: "./reports"
+      reportFile: "simple-api-report-{{yyyy-MM-dd-HH-mm-ss}}-[[site]]"
+      reportTitle: "Simple Auth API ZAP Scan Report"
+      reportDescription: "Automated security scan of Simple Auth API"
+    risks:
+      - high
+      - medium
+      - low
+      - info
