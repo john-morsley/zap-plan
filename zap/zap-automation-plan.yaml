@@ -49,6 +49,10 @@ jobs:
       name: "api-httpsender.js"
       file: "./api-httpsender.js"
 
+  - type: "delay"
+    parameters:
+      time: 2
+
   - type: "openapi"
     parameters:
       apiFile: "./swagger.json"

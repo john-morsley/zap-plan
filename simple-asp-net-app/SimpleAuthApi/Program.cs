@@ -70,6 +70,8 @@ builder.Services.AddSingleton(key);
 
 var app = builder.Build();
 
+app.UseMiddleware<SimpleAuthApi.Middleware.RequestInspectionMiddleware>();
+
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
