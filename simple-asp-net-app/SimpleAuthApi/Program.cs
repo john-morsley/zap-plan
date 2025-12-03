@@ -70,7 +70,7 @@ builder.Services.AddSingleton(key);
 
 var app = builder.Build();
 
-app.UseMiddleware<SimpleAuthApi.Middleware.RequestInspectionMiddleware>();
+app.UseMiddleware<SimpleAuthApi.Middleware.RequestResponseInspectionMiddleware>();
 
 app.Use(async (context, next) =>
 {

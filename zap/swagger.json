@@ -6,7 +6,7 @@
     "version": "v1"
   },
   "paths": {
-    "/Another": {
+    "/another": {
       "get": {
         "tags": [
           "Another"
@@ -46,7 +46,19 @@
         }
       }
     },
-    "/Test": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Health"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/test": {
       "get": {
         "tags": [
           "Test"

@@ -6,9 +6,8 @@ function sendingRequest(msg, initiator, helper) {
   
   print("[HTTPSENDER] Sending request to: " + url);
   
-  if (url.toLowerCase().indexOf("/authorisation") !== -1 || 
-      url.toLowerCase().indexOf("/health") !== -1) {
-    // These endpoints don't need auth token
+  if (url.toLowerCase().indexOf("/authorisation") !== -1) {
+    // Auth endpoint doesn't need auth token
     print("[HTTPSENDER] Skipping auth for: " + url);
     return;
   }

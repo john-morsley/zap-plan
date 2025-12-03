@@ -43,3 +43,11 @@ function getRequiredParamsNames() {
 function getOptionalParamsNames() {
   return [];
 }
+
+function clearWebSessionIdentifiers(sessionWrapper) {
+  print("[SESSION] Clearing web session identifiers...");
+  var session = sessionWrapper.getSession();
+  session.setValue("token", null);
+  token = null;
+  print("[SESSION] Session cleared");
+}

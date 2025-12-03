@@ -19,9 +19,12 @@ env:
           client_id: "ABC"
           client_secret: "123"
         verification:
-          method: "response"
-          loggedInRegex: "\\QeyJ\\E"
-          loggedOutRegex: "\\Q401\\E|\\QUnauthorized\\E"
+          method: "poll"
+          pollUrl: "https://localhost:5001/test"
+          pollFrequency: 5
+          pollUnits: "seconds"
+          loggedInRegex: "\\Q200\\E"
+          loggedOutRegex: "\\Q401\\E|\\Q403\\E"
       sessionManagement:
         method: "script"
         parameters:
@@ -64,7 +67,7 @@ jobs:
     parameters:
       context: "simple-auth-api"
       user: "test-client"
-      url: "https://localhost:5001/Health"
+      url: "https://localhost:5001/health"
       maxDuration: 2
       maxDepth: 5
       maxChildren: 10
@@ -80,9 +83,11 @@ jobs:
       user: "test-client"
       maxRuleDurationInMins: 5
       maxScanDurationInMins: 15
+      threadPerHost: 2
+      delayInMs: 0
     policyDefinition:
-      defaultStrength: "HIGH" # Low, Medium, High, Insane (not recommended), default: Medium
-      defaultThreshold: "MEDIUM" # Off, Low, Medium, High, default: Medium
+      defaultStrength: "INSANE" # Low, Medium, High, Insane (not recommended), default: Medium
+      defaultThreshold: "HIGH" # Off, Low, Medium, High, default: Medium
       rules:
         - id: 40012
           name: "Cross Site Scripting (Reflected)"

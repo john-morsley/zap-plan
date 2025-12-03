@@ -31,9 +31,11 @@ public class AuthorisationController : ControllerBase
              Subject = new ClaimsIdentity(new[]
              {
                  new Claim(ClaimTypes.Name, id),
-                 new Claim("id", id)
+                 new Claim("id", id),
+                 new Claim("jti", Guid.NewGuid().ToString()),
+                 new Claim("iat", DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())
              }),
-             Expires = DateTime.UtcNow.AddHours(1),
+             Expires = DateTime.UtcNow.AddSeconds(30),
              SigningCredentials = new SigningCredentials(
                  new SymmetricSecurityKey(_key),
                  SecurityAlgorithms.HmacSha256Signature)
