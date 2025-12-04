@@ -30,6 +30,10 @@ function authenticate(helper, paramsValues, credentials) {
     HttpHeader.HTTP11
   );
   
+  // Set required headers for POST request
+  requestHeader.setHeader("Content-Type", "application/x-www-form-urlencoded");
+  requestHeader.setHeader("Content-Length", "0");
+  
   msg.setRequestHeader(requestHeader);
   
   // Send the request
