@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Morsley.UK.ZAP.SwaggerSplitter.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "--swaggerUrl https://localhost:5001/swagger/v1/swagger.json"
+    }
+  }
+}

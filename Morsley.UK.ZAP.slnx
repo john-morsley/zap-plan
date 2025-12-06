@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Morsley.UK.ZAP.API/Morsley.UK.ZAP.API.csproj" />
+    <Project Path="src/Morsley.UK.ZAP.SwaggerSplitter.Console/Morsley.UK.ZAP.SwaggerSplitter.Console.csproj" Id="fcd06643-0185-4722-9367-2d0fdecfdb90" />
+  </Folder>
+  <Folder Name="/tests/" />
+  <Folder Name="/zap/" />
+</Solution>
